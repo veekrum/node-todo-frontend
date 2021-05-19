@@ -1,7 +1,7 @@
 pipeline { 
     environment { 
         registry = "veekrum/nodeproject" 
-        registryCredential = "dockerhub_id" 
+        registryCredential = "veekrum" 
         dockerImage = '' 
     }
     agent any 
