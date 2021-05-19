@@ -2,7 +2,7 @@ node {
     
     def newApp
     def registry = 'veekrum/nodeproject'
-    def registryCredential = 'veekrum'
+    def registryCredential = 'dmVla3J1bTppZG9udGtub3czMTAzMQ=='
 	
 	stage('Git') {
 		git 'https://github.com/veekrum/node-todo-frontend.git'
