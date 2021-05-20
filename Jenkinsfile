@@ -1,32 +1,40 @@
-//Jenkins file only to tutorial example
-pipeline {
-  agent any
-    
-    
-  stages {
-        
-    stage('Cloning Git') {
-      steps {
-        git 'https://github.com/veekrum/node-todo-frontend.git'
-      }
+pipeline { 
+    environment { 
+        registry = "veekrum/nodeproject" 
+        registryCredential = "veekrum" 
+        dockerImage = '' 
     }
-        
-    stage('Install dependencies') {
-      steps {
-        sh 'npm install'
-      }
-    }
-     
-    stage('Test') {
-      steps {
-         sh 'npm test'
-      }
-    }
-    stage('Build') {
-      steps {
-         sh 'npm build'
-      }
-    }
+    agent any 
+    stages { 
+        stage('Cloning our Git') { 
+            steps { 
+                git 'https://github.com/veekrum/node-todo-frontend.git' 
+            }
+        } 
+        stage('Building our image') { 
 
-  }
+            steps { 
+                script { 
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
+                }
+            } 
+        }
+        stage('Deploy our image') { 
+            steps { 
+                script { 
+                    docker.withRegistry( '', registryCredential ) { 
+                        dockerImage.push() 
+                    }
+                } 
+
+            }
+        } 
+        stage('Cleaning up') { 
+            steps { 
+                sh "docker rmi $registry:$BUILD_NUMBER" 
+            }
+        } 
+    }
 }
+
+
