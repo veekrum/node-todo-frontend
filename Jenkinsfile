@@ -12,10 +12,14 @@ pipeline {
             }
         } 
         stage('Build') {
+            steps{
                 sh 'npm install'
+            }
         }
         stage('Test') {
+            steps{
                 sh 'npm test'
+            }
         }
         stage('Building our image') { 
 
